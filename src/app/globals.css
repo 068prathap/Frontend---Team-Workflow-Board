@@ -1,3 +1,32 @@
+:root {
+  --color-bg: #f5f6f8;
+  --color-surface: #ffffff;
+  --color-border: #dfe1e6;
+  --color-text: #172b4d;
+  --color-muted: #5e6c84;
+  --color-primary: #0c66e4;
+  --color-primary-hover: #0055cc;
+  --color-danger: #c9372c;
+  --color-danger-hover: #ae2e24;
+  --color-focus: #388bff;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-card: 0 1px 2px rgba(9, 30, 66, 0.2);
+  --shadow-modal: 0 8px 24px rgba(9, 30, 66, 0.25);
+
+  --font-sm: 13px;
+  --font-md: 14px;
+  --font-lg: 16px;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -5,7 +34,18 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  color: #171717;
-  background: #ffffff;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: var(--font-md);
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+ul {
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
