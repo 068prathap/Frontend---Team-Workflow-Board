@@ -36,3 +36,32 @@
   border: 1px solid black;
   border-radius: 2px;
 }
+
+.addButtonWrap {
+  display: flex;
+  justify-content: end;
+}
+
+.formPopup {
+  position: fixed;
+  width: 100%;
+  min-height: 100vh;
+  left: 0;
+  top: 0;
+  background: #808080a8;
+  backdrop-filter: blur(4px);
+  padding: 2rem;
+}
+
+.formPopupCloseWrap {
+  display: flex;
+  justify-content: end;
+}
+
+.form {
+  max-width: 600px;
+  margin: auto;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 4px;
+}
