@@ -1,53 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-
-const tasks = [
-  {
-    id: "1",
-    title: "Design login page",
-    description: "Create the layout for the login page.\nInclude email and password fields.",
-    status: "Backlog",
-    priority: "High",
-    assignee: "Prathap",
-    tags: ["design", "auth"],
-    createdAt: "2026-10-28T10:00:00.000Z",
-    updatedAt: "2026-10-30T09:30:00.000Z",
-  },
-  {
-    id: "2",
-    title: "Set up API client",
-    description: "Add a helper to call the backend APIs.",
-    status: "In Progress",
-    priority: "Medium",
-    assignee: "Ravi",
-    tags: ["setup"],
-    createdAt: "2026-10-29T08:15:00.000Z",
-    updatedAt: "2026-10-31T14:00:00.000Z",
-  },
-  {
-    id: "3",
-    title: "Fix navbar on mobile",
-    description: "Menu items overlap on small screens.",
-    status: "In Progress",
-    priority: "Low",
-    assignee: "Divya",
-    tags: ["bug", "mobile"],
-    createdAt: "2026-10-30T11:45:00.000Z",
-    updatedAt: "2026-11-01T07:20:00.000Z",
-  },
-  {
-    id: "4",
-    title: "Write onboarding docs",
-    description: "Steps for new developers to run the project.",
-    status: "Done",
-    priority: "Low",
-    assignee: "Prathap",
-    tags: ["docs"],
-    createdAt: "2026-10-25T09:00:00.000Z",
-    updatedAt: "2026-10-27T16:10:00.000Z",
-  },
-];
 
 const statusList = ["Backlog", "In Progress", "Done"];
 const priorityList = ["High", "Medium", "Low"];
@@ -55,10 +8,13 @@ const priorityList = ["High", "Medium", "Low"];
 const emptyForm = { title: "", description: "", status: "Backlog", priority: "High", assignee:"", tags: "" };
 
 export default function Home() {
-  const [taskList, setTaskList] = useState(tasks);
+  const [taskList, setTaskList] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ ...emptyForm })
   const [formTitleError, setFormTitleError] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [initialForm, setInitialForm] = useState({...emptyForm});
+  const [loaded, setLoaded] = useState(false);
 
   function filterTasks(status) {
     return taskList.filter((task)=>{
@@ -83,15 +39,61 @@ export default function Home() {
       return;
     }
     const newTags = formData.tags.split(",").map((tag) => tag.trim()).filter((tag) => tag !== "");
-    setTaskList((prev) => [...prev, {...formData, id: crypto.randomUUID(), tags: newTags, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()}]);
+    if(editingId) {
+      setTaskList((prev) => prev.map((task) => {
+        if(task.id === editingId) {
+          return {...task, ...formData, tags: newTags, updatedAt: new Date().toISOString()}
+        } else {
+          return task;
+        }
+      }))
+    } else {
+      setTaskList((prev) => [...prev, {...formData, id: crypto.randomUUID(), tags: newTags, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()}]);
+    }
     setShowForm(false);
     formReset();
   }
 
   function formReset() {
     setFormData({ ...emptyForm });
+    setInitialForm({ ...emptyForm });
     setFormTitleError(false);
+    setEditingId(null)
   }
+
+  function editTask(taskId) {
+    setEditingId(taskId);
+    const task = taskList.find((task)=>task.id === taskId);
+    setFormData({...task, tags: task.tags.join(", ")});    
+    setInitialForm({...task, tags: task.tags.join(", ")});    
+    setShowForm(true);
+  }
+
+  function closeForm() {
+    if(JSON.stringify(formData) !== JSON.stringify(initialForm)) {
+      if(window.confirm("Discard unsaved changes?")) {
+        setShowForm(false);
+        formReset()
+      }
+    } else {
+      setShowForm(false);
+      formReset()
+    }
+  }
+
+  useEffect(()=>{
+    const taskBoard = JSON.parse(localStorage.getItem("taskBoard"));
+    if(taskBoard) {
+      setTaskList(taskBoard);
+    }
+    setLoaded(true);
+  }, [])
+
+  useEffect(()=>{
+    if (loaded) {
+      localStorage.setItem("taskBoard", JSON.stringify(taskList));
+    }
+  }, [taskList])
 
   return (
     <>
@@ -128,6 +130,7 @@ export default function Home() {
                           ))
                         }
                       </select>
+                      <button onClick={()=>{editTask(task.id)}}>Edit</button>
                     </div>
                   ))
                 }
@@ -140,7 +143,7 @@ export default function Home() {
           showForm && 
           <div className={styles.formPopup}>
             <div className={styles.formPopupCloseWrap}>
-              <button onClick={()=>{setShowForm(false); formReset()}}>close</button>
+              <button onClick={()=>{closeForm()}}>close</button>
             </div>
             <form onSubmit={addTask} className={styles.form}>
               <p>Title</p>
