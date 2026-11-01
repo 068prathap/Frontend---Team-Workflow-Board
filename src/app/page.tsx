@@ -15,6 +15,7 @@ export default function Home() {
   const [editingId, setEditingId] = useState(null);
   const [initialForm, setInitialForm] = useState({...emptyForm});
   const [loaded, setLoaded] = useState(false);
+  const [message, setMessage] = useState("")
 
   function filterTasks(status) {
     return taskList.filter((task)=>{
@@ -84,14 +85,20 @@ export default function Home() {
   useEffect(()=>{
     const taskBoard = JSON.parse(localStorage.getItem("taskBoard"));
     if(taskBoard) {
-      setTaskList(taskBoard);
+      if (Array.isArray(taskBoard)) {
+        setTaskList(taskBoard);
+        setMessage("Your saved tasks were updated to the new format")
+        setTimeout(() => setMessage(""), 3000)
+      } else {
+        setTaskList(taskBoard.tasks)
+      }
     }
     setLoaded(true);
   }, [])
 
   useEffect(()=>{
     if (loaded) {
-      localStorage.setItem("taskBoard", JSON.stringify(taskList));
+      localStorage.setItem("taskBoard", JSON.stringify({ schemaVersion: 2, tasks: taskList }));
     }
   }, [taskList])
 
@@ -99,6 +106,8 @@ export default function Home() {
     <>
       <main className={styles.page}>
         <h1>Team Workflow Board</h1>
+        {message && <p>{message}</p>}
+
         <div className={styles.addButtonWrap}>
           <button onClick={()=>{setShowForm(true)}}>Add task</button>
         </div>
