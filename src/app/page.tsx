@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import styles from "./page.module.css";
 
 const tasks = [
@@ -51,10 +52,22 @@ const tasks = [
 const statusList = ["Backlog", "In Progress", "Done"]
 
 export default function Home() {
+  const [taskList, setTaskList] = useState(tasks);
+
   function filterTasks(status) {
-    return tasks.filter((task)=>{
+    return taskList.filter((task)=>{
       return task.status === status;
     })
+  }
+
+  function changeTaskList(newStatus, taskId) {
+    setTaskList((prevTaskList) => prevTaskList.map((task)=>{
+      if(task.id === taskId) {
+        return {... task, status: newStatus, updatedAt: new Date().toISOString()};
+      } else {
+        return task;
+      }
+    }))
   }
 
   return (
@@ -79,6 +92,14 @@ export default function Home() {
                           ))
                         }
                       </div>
+                      <p>change status:</p>
+                      <select value={task.status} onChange={(e)=>{changeTaskList(e.target.value, task.id)}}>
+                        {
+                          statusList.map((option)=>(
+                            <option key={option} value={option}>{option}</option>
+                          ))
+                        }
+                      </select>
                     </div>
                   ))
                 }
