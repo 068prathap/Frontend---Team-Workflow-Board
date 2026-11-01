@@ -1,4 +1,5 @@
 import { statusList, type Priority, type Status, type Task } from "@/types/task";
+import { relativeTime } from "@/utils/relativeTime";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Select } from "@/components/ui/Select";
@@ -36,6 +37,13 @@ export function TaskCard({ task, onEdit, onStatusChange }: TaskCardProps) {
           ))}
         </ul>
       )}
+
+      <p className={styles.updated}>
+        Updated{" "}
+        <time dateTime={task.updatedAt} title={new Date(task.updatedAt).toLocaleString()}>
+          {relativeTime(task.updatedAt)}
+        </time>
+      </p>
 
       <div className={styles.cardActions}>
         <Select

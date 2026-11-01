@@ -198,3 +198,21 @@ textarea.input {
   color: #ffffff;
   box-shadow: var(--shadow-modal);
 }
+
+.alert {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid;
+  border-radius: var(--radius-md);
+}
+
+.alertError {
+  border-color: #f87168;
+  background: #ffeceb;
+  color: #ae2e24;
+}
+
+.alertInfo {
+  border-color: #85b8ff;
+  background: #e9f2ff;
+  color: #0055cc;
+}

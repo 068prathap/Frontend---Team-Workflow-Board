@@ -13,9 +13,10 @@ type TaskFormProps = {
   onChange: <K extends keyof TaskFormData>(field: K, value: TaskFormData[K]) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   onCancel: () => void;
+  onDelete?: () => void;
 };
 
-export function TaskForm({ formData, titleError, submitLabel, onChange, onSubmit, onCancel }: TaskFormProps) {
+export function TaskForm({ formData, titleError, submitLabel, onChange, onSubmit, onCancel, onDelete }: TaskFormProps) {
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
       <TextInput
@@ -56,6 +57,11 @@ export function TaskForm({ formData, titleError, submitLabel, onChange, onSubmit
         onChange={(e) => onChange("tags", e.target.value)}
       />
       <div className={styles.formActions}>
+        {onDelete && (
+          <Button variant="destructive" className={styles.deleteButton} onClick={onDelete}>
+            Delete
+          </Button>
+        )}
         <Button variant="secondary" onClick={onCancel}>
           Cancel
         </Button>
