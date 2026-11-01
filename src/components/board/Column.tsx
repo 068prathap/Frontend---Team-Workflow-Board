@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { memo, useId } from "react";
 import type { Status, Task } from "@/types/task";
 import { TaskCard } from "./TaskCard";
 import styles from "./board.module.css";
@@ -10,7 +10,7 @@ type ColumnProps = {
   onStatusChange: (taskId: string, status: Status) => void;
 };
 
-export function Column({ status, tasks, onEdit, onStatusChange }: ColumnProps) {
+export const Column = memo(function Column({ status, tasks, onEdit, onStatusChange }: ColumnProps) {
   const headingId = useId();
 
   return (
@@ -32,4 +32,4 @@ export function Column({ status, tasks, onEdit, onStatusChange }: ColumnProps) {
       )}
     </section>
   );
-}
+});

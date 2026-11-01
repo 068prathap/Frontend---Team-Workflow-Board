@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { statusList, type Priority, type Status, type Task } from "@/types/task";
 import { relativeTime } from "@/utils/relativeTime";
 import { Button } from "@/components/ui/Button";
@@ -18,7 +19,7 @@ type TaskCardProps = {
   onStatusChange: (taskId: string, status: Status) => void;
 };
 
-export function TaskCard({ task, onEdit, onStatusChange }: TaskCardProps) {
+export const TaskCard = memo(function TaskCard({ task, onEdit, onStatusChange }: TaskCardProps) {
   return (
     <Card className={styles.taskCard}>
       <h3 className={styles.taskTitle}>{task.title}</h3>
@@ -59,4 +60,4 @@ export function TaskCard({ task, onEdit, onStatusChange }: TaskCardProps) {
       </div>
     </Card>
   );
-}
+});
