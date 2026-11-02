@@ -186,3 +186,5 @@ I used Claude (an AI assistant) during this assignment.
 - "Update README for the finished app"
 
 That covers splitting my single page into components and hooks, the TypeScript types, the visual design, accessibility, filters and sorting with the URL, relative time, delete, storage error handling, the performance fix, the tests, and this README. The storage, migration, create, edit and status logic inside the hooks is the logic I wrote earlier, moved into the new files.
+
+**What I changed from Claude's suggestions:** I gave Claude the instructions for each part, based on this assignment, and guided it by checking the result in the browser and asking for changes when something was not right (for example, the dropdown arrows in the filter bar were not aligned). I did not rewrite Claude's code by hand.
