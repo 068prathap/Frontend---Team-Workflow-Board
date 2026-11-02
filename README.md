@@ -2,6 +2,8 @@
 
 A small Trello-style board for a team's tasks. Tasks live in three columns (Backlog, In Progress, Done), can be created, edited, moved and deleted, can be filtered and sorted, and are saved in the browser.
 
+**Live demo:** https://team-workflow-board-weld.vercel.app/
+
 ## How to run
 
 Requires Node 18.18 or newer.
